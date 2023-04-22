@@ -7,11 +7,11 @@ export default class TelemetryRandomizer {
 
   static randomize(telemetry: MinerTelemetry) {
     for (const temp of telemetry.temp) {
-      temp.intake = TelemetryRandomizer.randomNominal(this.NOMINAL_INTAKE, 0.04).toPrecision(3);
+      temp.intake = TelemetryRandomizer.randomNominal(this.NOMINAL_INTAKE, 0.04);
     }
 
     for (let i = 0; i < telemetry.fans.length; i++) {
-      telemetry.fans[i] = this.randomNominal(this.NOMINAL_FAN_SPEED, 0.04).toPrecision(4);
+      telemetry.fans[i] = this.randomNominal(this.NOMINAL_FAN_SPEED, 0.0);
     }
 
     return telemetry;    
