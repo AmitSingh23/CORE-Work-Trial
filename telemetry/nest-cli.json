@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/telemetry-producer/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/telemetry-producer/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/telemetry-producer",
+  "projects": {
+    "telemetry-producer": {
+      "type": "application",
+      "root": "apps/telemetry-producer",
+      "entryFile": "main",
+      "sourceRoot": "apps/telemetry-producer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/telemetry-producer/tsconfig.app.json"
+      }
+    },
+    "telemetry-consumer": {
+      "type": "application",
+      "root": "apps/telemetry-consumer",
+      "entryFile": "main",
+      "sourceRoot": "apps/telemetry-consumer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/telemetry-consumer/tsconfig.app.json"
+      }
+    },
+    "miner-telemetry-models": {
+      "type": "library",
+      "root": "libs/miner-telemetry-models",
+      "entryFile": "index",
+      "sourceRoot": "libs/miner-telemetry-models/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/miner-telemetry-models/tsconfig.lib.json"
+      }
+    }
+  }
+}
