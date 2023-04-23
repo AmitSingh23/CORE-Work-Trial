@@ -4,7 +4,7 @@ import { TelemetryModule } from './telemetry/telemetry.module';
 import { AppController } from './app.controller';
 
 @Module({
-  imports: [TelemetryModule, ConfigModule.forRoot({ isGlobal: true })],
+  imports: [TelemetryModule, ConfigModule.forRoot({ ignoreEnvFile: true, isGlobal: true })],
   controllers: [AppController],
   providers: [],
 })

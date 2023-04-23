@@ -1,15 +1,24 @@
-import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { TelemetryProducerClient } from './telemetry.producer.client/telemetry.producer.client';
+import RedisPublisher from './redis/redis.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TelemetryConsumerService {
 
-  @Inject()
-  telemetryProducerClient: TelemetryProducerClient
+  telemetryProducerClient: TelemetryProducerClient;
+  
+  redisPublisher: RedisPublisher;
 
-  minerIds: string[] = ["1", "2", "3"];
+  minerIds: string[];
+
+  constructor(configService: ConfigService, telemetryProducerClient: TelemetryProducerClient, redisPublisher: RedisPublisher) {
+    this.telemetryProducerClient = telemetryProducerClient;
+    this.redisPublisher = redisPublisher;
+
+    this.minerIds = configService.get<string>('MINERS').split(',');
+  }
 
   getHello(): string {
     return 'Hello World!';
@@ -17,10 +26,11 @@ export class TelemetryConsumerService {
 
   @Cron(CronExpression.EVERY_5_SECONDS)
   async get() {
-    console.log('5 seconds');
+    for (const minerId of this.minerIds) {
+      const data = await this.telemetryProducerClient.getTelemetry(minerId);
+      this.redisPublisher.publish(data);
 
-    const data = await this.telemetryProducerClient.getTelemetry(this.minerIds[0]);
-
-    console.log(data);
+      console.log(minerId);
+    }
   }
 }

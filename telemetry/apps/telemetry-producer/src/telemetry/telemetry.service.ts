@@ -2,7 +2,6 @@ import MinerTelemetry from '@app/miner-telemetry-models/telemetry/models/MinerTe
 import {
   Get, Injectable, InternalServerErrorException, NotFoundException, OnModuleInit, Query,
 } from '@nestjs/common';
-import { data } from '../../data/miner.telemetry.seed';
 import TelemetryRandomizer from '../telemetry.randomizer/telemetry.randomizer.service';
 
 @Injectable()

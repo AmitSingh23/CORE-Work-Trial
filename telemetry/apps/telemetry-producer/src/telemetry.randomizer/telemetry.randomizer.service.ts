@@ -1,4 +1,3 @@
-import MinerTelemetry from "@app/miner-telemetry-models/telemetry/models/MinerTelemetry";
 import MinerTelemetryFactory from "@app/miner-telemetry-models/telemetry/models/MinerTelemetryFactory";
 
 export default class TelemetryRandomizer {
