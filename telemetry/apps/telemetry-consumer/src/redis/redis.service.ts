@@ -2,18 +2,22 @@ import MinerTelemetry from '@app/miner-telemetry-models/telemetry/models/MinerTe
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
+import { RedisProvider } from '../redis.provider/redis.provider';
 
 @Injectable()
 export default class RedisPublisher {
-  private readonly redis: Redis;
+  private readonly redis: RedisProvider;
 
-  constructor(configService: ConfigService) {
-    const host = configService.get<string>('REDIS_HOST');
-    this.redis = new Redis(6379, host);
+  constructor(redisProvider: RedisProvider) {
+    this.redis = redisProvider
   }
 
-  public publish(telemetry: MinerTelemetry): Promise<string> {
+  publish(telemetry: MinerTelemetry): Promise<string> {
     const payload = JSON.stringify(telemetry);
-    return this.redis.xadd(`miner-telemetry:${telemetry.id}`, '*', 'payload', payload);
+    return this.redis.getRedis().xadd(`miner-telemetry:${telemetry.id}`, '*', 'payload', payload);
+  }
+
+  getRedisProvider(): RedisProvider {
+    return this.redis;
   }
 }

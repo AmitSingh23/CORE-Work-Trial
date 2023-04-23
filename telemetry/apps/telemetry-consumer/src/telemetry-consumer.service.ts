@@ -17,11 +17,7 @@ export class TelemetryConsumerService {
     this.telemetryProducerClient = telemetryProducerClient;
     this.redisPublisher = redisPublisher;
 
-    this.minerIds = configService.get<string>('MINERS').split(',');
-  }
-
-  getHello(): string {
-    return 'Hello World!';
+    this.minerIds = configService.get<string>('MINERS')?.split(',');
   }
 
   @Cron(CronExpression.EVERY_5_SECONDS)
