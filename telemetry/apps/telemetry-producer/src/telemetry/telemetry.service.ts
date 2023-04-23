@@ -1,6 +1,6 @@
 import MinerTelemetry from '@app/miner-telemetry-models/telemetry/models/MinerTelemetry';
 import {
-  Get, Injectable, InternalServerErrorException, NotFoundException, OnModuleInit,
+  Get, Injectable, InternalServerErrorException, NotFoundException, OnModuleInit, Query,
 } from '@nestjs/common';
 import { data } from '../../data/miner.telemetry.seed';
 import TelemetryRandomizer from '../telemetry.randomizer/telemetry.randomizer.service';
@@ -8,31 +8,33 @@ import TelemetryRandomizer from '../telemetry.randomizer/telemetry.randomizer.se
 @Injectable()
 export class TelemetryService implements OnModuleInit {
   private telemetryData: Map<String, MinerTelemetry> = new Map<String, MinerTelemetry>();
+  private minerIds: Set<String> = new Set<String>();
 
   onModuleInit() {
-    console.log("yurr")
-    this.loadMinerTelemetry(data);
+    this.loadMinerIds();
   }
 
   getMinerTelemetry(id: string) {
-    let miner: MinerTelemetry;
+    let minerExists = false;
 
     try {
-      miner = this.telemetryData.get(id);
+      minerExists = this.minerIds.has(id);
     } catch (e: any) {
       throw new InternalServerErrorException(`An error ocurred while trying to access telemetry data for miner(${id})`);
     }
 
-    if (!miner) {
-      throw new NotFoundException(`Miner(${id}) does not exist`);
+    if (!minerExists) {
+      throw new NotFoundException(`Miner(${id} was not found)`)
     }
 
-    return TelemetryRandomizer.randomize(miner);;
+    return TelemetryRandomizer.randomize(id);
   }
 
-  loadMinerTelemetry(data: MinerTelemetry[]) {
-    for (const miner of data) {
-      this.telemetryData.set(miner.id, miner);
+  // this call simulates talking to the miner orchestrator to get all the miner info 
+  loadMinerIds() {
+    for (const id of process.env.MINERS.split(",")) {
+      this.minerIds.add(id);
     }
   }
+
 }

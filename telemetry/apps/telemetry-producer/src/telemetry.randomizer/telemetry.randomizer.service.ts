@@ -1,32 +1,39 @@
 import MinerTelemetry from "@app/miner-telemetry-models/telemetry/models/MinerTelemetry";
+import MinerTelemetryFactory from "@app/miner-telemetry-models/telemetry/models/MinerTelemetryFactory";
 
 export default class TelemetryRandomizer {
-  static readonly NOMINAL_INTAKE = 72;
-  static readonly NOMINAL_OUT = 92;
-  static readonly NOMINAL_FAN_SPEED = 7200;
+  static randomize(id: string) {
+    let telemetry = MinerTelemetryFactory.createNominalMinerTelemetry(id);
 
-  static randomize(telemetry: MinerTelemetry) {
     for (const temp of telemetry.temp) {
-      temp.intake = TelemetryRandomizer.randomNominal(this.NOMINAL_INTAKE, 0.04);
+      temp.intake = TelemetryRandomizer.randomNominal(MinerTelemetryFactory.NOMINAL_INTAKE, 0.04);
     }
 
     for (let i = 0; i < telemetry.fans.length; i++) {
-      telemetry.fans[i] = this.randomNominal(this.NOMINAL_FAN_SPEED, 0.0);
+      telemetry.fans[i] = this.randomNominal(MinerTelemetryFactory.NOMINAL_FAN_SPEED, 0.04);
     }
 
+    telemetry.hashrate = this.randomNominal(MinerTelemetryFactory.NOMINAL_HASHRATE, 0.04);
+    telemetry.health = this.randomBool(0.9);
+    telemetry.pool = this.randomBool(0.9);
+
     return telemetry;    
+  }
+
+  private static randomBool(rate: number) {
+    return Math.random() <= rate ? true : false;
   }
 
   private static randomNominal(nominalValue: number, skew: number): number {
     return TelemetryRandomizer.gaussianRandom(nominalValue, nominalValue * skew);
   }
-  
-  private static gaussianRandom(mean=0, stdev=1) {
-    let u = 1 - Math.random(); // Converting [0,1) to (0,1]
+
+  private static gaussianRandom(mean: number, stdev: number) {
+    let u = 1 - Math.random();
     let v = Math.random();
     let z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
     
-    // Transform to the desired mean and standard deviation:
     return z * stdev + mean;
-}
+  }
+
 }
