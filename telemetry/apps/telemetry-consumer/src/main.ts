@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { TelemetryConsumerModule } from './telemetry-consumer.module';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(TelemetryConsumerModule);
+  const app = await NestFactory.create(AppModule);
   await app.listen(3000);
 }
 bootstrap();

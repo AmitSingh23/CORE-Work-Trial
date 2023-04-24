@@ -2,7 +2,7 @@ import MinerTelemetry from '@app/miner-telemetry-models/telemetry/models/MinerTe
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
-import { RedisProvider } from '../redis.provider/redis.provider';
+import { RedisProvider } from '../provider/redis.provider';
 
 @Injectable()
 export default class RedisPublisher {

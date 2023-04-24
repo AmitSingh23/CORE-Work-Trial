@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import RedisPublisher from './redis.service';
+import RedisPublisher from './redis.publisher';
 import { ConfigModule } from '@nestjs/config';
 import MinerTelemetryFactory from '@app/miner-telemetry-models/telemetry/models/MinerTelemetryFactory';
-import { RedisProvider } from '../redis.provider/redis.provider';
+import { RedisProvider } from '../provider/redis.provider';
 
 const mockRedis = {
   xadd: (...args) => {return {}}
@@ -46,6 +46,6 @@ describe('RedisService', () => {
     service.publish(MinerTelemetryFactory.createNominalMinerTelemetry("random-id"));
 
     expect(service.getRedisProvider().getRedis().xadd).toHaveBeenCalledTimes(1);
-    expect(service.getRedisProvider().getRedis().xadd).toHaveBeenCalledWith();
+    expect(service.getRedisProvider().getRedis().xadd).toHaveBeenCalledWith('miner-telemetry:random-id', '*', 'payload', expect.any(String));
   });
 });

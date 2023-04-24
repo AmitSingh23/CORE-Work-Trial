@@ -1,10 +1,8 @@
 import MinerTelemetry from '@app/miner-telemetry-models/telemetry/models/MinerTelemetry';
-import MinerTelemetryFactory from '@app/miner-telemetry-models/telemetry/models/MinerTelemetryFactory';
 import { HttpService } from '@nestjs/axios';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { response } from 'express';
-import { Observable, catchError, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class TelemetryProducerClient {
