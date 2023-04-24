@@ -45,6 +45,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/test-utils/tsconfig.lib.json"
       }
+    },
+    "telemetry-monitor": {
+      "type": "application",
+      "root": "apps/telemetry-monitor",
+      "entryFile": "main",
+      "sourceRoot": "apps/telemetry-monitor/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/telemetry-monitor/tsconfig.app.json"
+      }
     }
   }
 }
