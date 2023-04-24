@@ -82,7 +82,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/miner-telemetry-models(|/.*)$": "<rootDir>/libs/miner-telemetry-models/src/$1"
+      "^@app/miner-telemetry-models(|/.*)$": "<rootDir>/libs/miner-telemetry-models/src/$1",
+      "^@app/test-utils(|/.*)$": "<rootDir>/libs/test-utils/src/$1"
     }
   }
 }

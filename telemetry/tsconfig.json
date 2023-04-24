@@ -23,6 +23,12 @@
       ],
       "@app/miner-telemetry-models/*": [
         "libs/miner-telemetry-models/src/*"
+      ],
+      "@app/test-utils": [
+        "libs/test-utils/src"
+      ],
+      "@app/test-utils/*": [
+        "libs/test-utils/src/*"
       ]
     }
   }

@@ -1,14 +1,21 @@
-import MinerTelemetry from '@app/miner-telemetry-models/telemetry/models/MinerTelemetry';
 import {
-  Get, Injectable, InternalServerErrorException, NotFoundException, OnModuleInit, Query,
+  Injectable, InternalServerErrorException, NotFoundException, OnModuleInit, Query,
 } from '@nestjs/common';
 import TelemetryRandomizer from '../telemetry.randomizer/telemetry.randomizer.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TelemetryService implements OnModuleInit {
-  private telemetryData: Map<String, MinerTelemetry> = new Map<String, MinerTelemetry>();
+  private configService: ConfigService
+
+  constructor(configService: ConfigService) {
+    this.configService = configService;
+  }
+
   private minerIds: Set<String> = new Set<String>();
 
+  // simulates loading data when the module is loaded-- in this demo it doesn't matter, but realistically, it would be an API call/cache lookup and 
+  // something that expensive shouldn't be in the constructor
   onModuleInit() {
     this.loadMinerIds();
   }
@@ -23,7 +30,7 @@ export class TelemetryService implements OnModuleInit {
     }
 
     if (!minerExists) {
-      throw new NotFoundException(`Miner(${id} was not found)`)
+      throw new NotFoundException(`Miner(${id}) was not found`)
     }
 
     return TelemetryRandomizer.randomize(id);
@@ -31,7 +38,7 @@ export class TelemetryService implements OnModuleInit {
 
   // this call simulates talking to the miner orchestrator to get all the miner info 
   loadMinerIds() {
-    for (const id of process.env.MINERS.split(",")) {
+    for (const id of this.configService.get<string>('MINERS')?.split(",")) {
       this.minerIds.add(id);
     }
   }
