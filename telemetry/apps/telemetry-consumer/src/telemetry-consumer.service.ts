@@ -23,9 +23,12 @@ export class TelemetryConsumerService {
   @Cron(CronExpression.EVERY_5_SECONDS)
   async get() {
     for (const minerId of this.minerIds) {
-      const data = await this.telemetryProducerClient.getTelemetry(minerId);
-      this.redisPublisher.publish(data);
-
+      try {
+        const data = await this.telemetryProducerClient.getTelemetry(minerId);
+        this.redisPublisher.publish(data);
+      } catch (err: any) {
+        console.error(err);
+      }
       console.log(minerId);
     }
   }
