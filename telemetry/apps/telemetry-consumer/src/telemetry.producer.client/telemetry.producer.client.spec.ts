@@ -4,7 +4,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { createMock, DeepMocked } from '@golevelup/ts-jest';
 import { of } from 'rxjs';
-import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AxiosResponse } from 'axios';
 import MinerTelemetryFactory from '@app/miner-telemetry-models/telemetry/models/MinerTelemetryFactory';
 
 describe('TelemetryProducerClientService', () => {
@@ -40,8 +40,7 @@ describe('TelemetryProducerClientService', () => {
   });
 
   it('should generate a valid Miner Telemetry object', async () => {
-
-    // mock response
+    // mock GET response to producer
     let sampleJSON: string = JSON.parse(JSON.stringify(MinerTelemetryFactory.createNominalMinerTelemetry('1')));
     httpService.get.mockReturnValue(of({data: sampleJSON} as AxiosResponse));
 
@@ -51,4 +50,22 @@ describe('TelemetryProducerClientService', () => {
     expect(httpService.get).toBeCalledWith('host/telemetry/1')
     expect(response).toEqual(sampleJSON)
   });
+
+
+  // we explicitly test this because this service is not expected to catch exceptions
+  it('should throw exception when one is thrown by the httpService', async () => {
+    httpService.get.mockImplementation(() => {
+      throw new Error('fake-error');
+    });
+
+    let exceptionThrown = false;
+    try {
+      const response = await service.getTelemetry('1');
+    } catch (error: any) {
+      exceptionThrown = true;
+    }
+
+    expect(exceptionThrown).toBeTruthy();
+
+  })
 });
