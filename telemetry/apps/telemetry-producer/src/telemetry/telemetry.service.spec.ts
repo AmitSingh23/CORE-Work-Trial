@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TelemetryService } from './telemetry.service';
 import { ConfigService } from '@nestjs/config';
 import ContractValidator from '@app/test-utils/ContractValidator';
-import { response } from 'express';
 import { NotFoundException } from '@nestjs/common';
 
 describe('TelemetryService', () => {

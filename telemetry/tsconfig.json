@@ -29,6 +29,12 @@
       ],
       "@app/test-utils/*": [
         "libs/test-utils/src/*"
+      ],
+      "@app/redis": [
+        "libs/redis/src"
+      ],
+      "@app/redis/*": [
+        "libs/redis/src/*"
       ]
     }
   }

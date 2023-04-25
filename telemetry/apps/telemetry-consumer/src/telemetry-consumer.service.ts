@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { TelemetryProducerClient } from './telemetry.producer.client/telemetry.producer.client';
-import RedisPublisher from './redis/publisher/redis.publisher';
 import { ConfigService } from '@nestjs/config';
+import RedisPublisher from '@app/redis/publisher/redis.publisher';
 
 @Injectable()
 export class TelemetryConsumerService {

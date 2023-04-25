@@ -53,6 +53,18 @@ services:
       - app-network
     depends_on:
       - redis
+  monitor:
+    build: .
+    ports:
+      - "3004:3000"
+    environment:
+      APP_NAME: "telemetry-monitor"
+      MINERS: "1,2,3,4,5,6,7,8,9,10"
+      REDIS_HOST: "redis://redis"
+    networks:
+      - app-network
+    depends_on:
+      - redis
   redis:
     image: redis
     networks:

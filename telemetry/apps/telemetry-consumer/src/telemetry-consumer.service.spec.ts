@@ -2,9 +2,8 @@ import { ConfigService } from "@nestjs/config";
 import { TelemetryConsumerService } from "./telemetry-consumer.service";
 import { Test, TestingModule } from "@nestjs/testing";
 import { TelemetryProducerClient } from "./telemetry.producer.client/telemetry.producer.client";
-import RedisPublisher from "./redis/publisher/redis.publisher";
 import { DeepMocked, createMock } from "@golevelup/ts-jest";
-import exp from "constants";
+import RedisPublisher from "@app/redis/publisher/redis.publisher";
 
 
 describe('TelemetryConsumerService', () => {
