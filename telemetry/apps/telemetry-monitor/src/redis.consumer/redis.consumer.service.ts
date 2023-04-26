@@ -33,7 +33,7 @@ export default class RedisConsumerService extends EventEmitter {
         streamEntries.forEach(([stream, entries]) => {
           entries.forEach(([id, fields]) => {
             this.lastIds[stream] = id;
-            this.emit('redis-message-consumed', { id, stream, JSON.parse(fields) } as unknown);
+            this.emit('redis-message-consumed', { id, stream, payload: JSON.parse(fields[1])} as RedisRecord);
           });
         });
       } catch (error: any) {
