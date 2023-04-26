@@ -1,8 +1,8 @@
-import MinerTelemetryFactory from "@app/miner-telemetry-models/telemetry/models/MinerTelemetryFactory";
+import MinerTelemetryFactory from '@app/miner-telemetry-models/telemetry/models/MinerTelemetryFactory';
 
 export default class TelemetryRandomizer {
   static randomize(id: string) {
-    let telemetry = MinerTelemetryFactory.createNominalMinerTelemetry(id);
+    const telemetry = MinerTelemetryFactory.createNominalMinerTelemetry(id);
 
     for (const temp of telemetry.temp) {
       temp.intake = TelemetryRandomizer.randomNominal(MinerTelemetryFactory.NOMINAL_INTAKE, 0.04);
@@ -16,11 +16,11 @@ export default class TelemetryRandomizer {
     telemetry.health = this.randomBool(0.9);
     telemetry.pool = this.randomBool(0.9);
 
-    return telemetry;    
+    return telemetry;
   }
 
   private static randomBool(rate: number) {
-    return Math.random() <= rate ? true : false;
+    return Math.random() <= rate;
   }
 
   private static randomNominal(nominalValue: number, skew: number): number {
@@ -28,11 +28,10 @@ export default class TelemetryRandomizer {
   }
 
   private static gaussianRandom(mean: number, stdev: number) {
-    let u = 1 - Math.random();
-    let v = Math.random();
-    let z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
-    
+    const u = 1 - Math.random();
+    const v = Math.random();
+    const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+
     return z * stdev + mean;
   }
-
 }

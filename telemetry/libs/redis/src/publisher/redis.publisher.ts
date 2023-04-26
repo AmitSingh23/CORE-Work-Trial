@@ -7,7 +7,7 @@ export default class RedisPublisher {
   private readonly redis: RedisProvider;
 
   constructor(redisProvider: RedisProvider) {
-    this.redis = redisProvider
+    this.redis = redisProvider;
   }
 
   publish(telemetry: MinerTelemetry): Promise<string> {

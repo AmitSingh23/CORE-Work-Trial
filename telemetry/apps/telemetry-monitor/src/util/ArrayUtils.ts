@@ -1,4 +1,3 @@
-
 export default class ArrayUtils {
   static average(arr: number[]): number {
     if (arr.length === 0) {

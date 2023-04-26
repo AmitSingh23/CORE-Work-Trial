@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TelemetryService } from './telemetry.service';
 import { ConfigService } from '@nestjs/config';
 import ContractValidator from '@app/test-utils/ContractValidator';
 import { NotFoundException } from '@nestjs/common';
+import { TelemetryService } from './telemetry.service';
 
 describe('TelemetryService', () => {
   let service: TelemetryService;
@@ -10,15 +10,13 @@ describe('TelemetryService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        TelemetryService, 
+        TelemetryService,
         {
-          provide: ConfigService, 
+          provide: ConfigService,
           useValue: {
-            get: () => {
-              return "1,2,3"
-            }
-          }
-        }
+            get: () => '1,2,3',
+          },
+        },
       ],
     }).compile();
 
@@ -33,10 +31,10 @@ describe('TelemetryService', () => {
   });
 
   it('should return valid MinerTelemetry object if miner exists', () => {
-    let response = service.getMinerTelemetry('1');
+    const response = service.getMinerTelemetry('1');
 
     ContractValidator.validate(response);
-  })
+  });
 
   it('should throw a NotFoundException if miner does not exist', () => {
     let response: any;
@@ -47,5 +45,5 @@ describe('TelemetryService', () => {
     }
 
     expect(response instanceof NotFoundException).toBe(true);
-  })
+  });
 });

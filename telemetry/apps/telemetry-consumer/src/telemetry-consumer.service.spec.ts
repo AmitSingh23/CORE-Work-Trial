@@ -1,10 +1,9 @@
-import { ConfigService } from "@nestjs/config";
-import { TelemetryConsumerService } from "./telemetry-consumer.service";
-import { Test, TestingModule } from "@nestjs/testing";
-import { TelemetryProducerClient } from "./telemetry.producer.client/telemetry.producer.client";
-import { DeepMocked, createMock } from "@golevelup/ts-jest";
-import RedisPublisher from "@app/redis/publisher/redis.publisher";
-
+import { ConfigService } from '@nestjs/config';
+import { Test, TestingModule } from '@nestjs/testing';
+import { DeepMocked, createMock } from '@golevelup/ts-jest';
+import RedisPublisher from '@app/redis/publisher/redis.publisher';
+import { TelemetryProducerClient } from './telemetry.producer.client/telemetry.producer.client';
+import { TelemetryConsumerService } from './telemetry-consumer.service';
 
 describe('TelemetryConsumerService', () => {
   let service: TelemetryConsumerService;
@@ -17,21 +16,20 @@ describe('TelemetryConsumerService', () => {
         TelemetryConsumerService,
         {
           provide: TelemetryProducerClient,
-          useValue: createMock<TelemetryProducerClient>()
-        }, 
+          useValue: createMock<TelemetryProducerClient>(),
+        },
         {
           provide: RedisPublisher,
-          useValue: createMock<RedisPublisher>()
+          useValue: createMock<RedisPublisher>(),
         },
         {
           provide: ConfigService,
           useValue: {
-            get: jest.fn((key: string) => {
-                return "1,2,3,4,5"              
-            })
-          }
-      }
-    ]}).compile();
+            get: jest.fn((key: string) => '1,2,3,4,5'),
+          },
+        },
+      ],
+    }).compile();
 
     service = module.get<TelemetryConsumerService>(TelemetryConsumerService);
     client = module.get(TelemetryProducerClient);
@@ -52,21 +50,21 @@ describe('TelemetryConsumerService', () => {
   it('should continue processing miners if a GET request fails', async () => {
     client.getTelemetry.mockImplementationOnce(async (id) => {
       throw new Error('fake-error');
-    })
+    });
 
     await service.get();
 
     // still call this every time
     expect(client.getTelemetry).toBeCalledTimes(5);
 
-    // this will have been called 4 times because the first call failed 
+    // this will have been called 4 times because the first call failed
     expect(redis.publish).toBeCalledTimes(4);
-  })
+  });
 
-  it('should continue processing miners if a redis publish fails',async () => {
+  it('should continue processing miners if a redis publish fails', async () => {
     redis.publish.mockImplementationOnce((minerTelemetry) => {
       throw new Error('fake-error');
-    })
+    });
 
     await service.get();
 
@@ -75,5 +73,5 @@ describe('TelemetryConsumerService', () => {
 
     // this will still have been called 5 times because the first call failed but it still happened
     expect(redis.publish).toBeCalledTimes(5);
-  })
+  });
 });

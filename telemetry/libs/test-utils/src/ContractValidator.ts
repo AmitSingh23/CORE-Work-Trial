@@ -1,5 +1,5 @@
-import MinerTelemetry from "@app/miner-telemetry-models/telemetry/models/MinerTelemetry";
-import TemperatureSensor from "@app/miner-telemetry-models/telemetry/models/TemperatureSensor";
+import MinerTelemetry from '@app/miner-telemetry-models/telemetry/models/MinerTelemetry';
+import TemperatureSensor from '@app/miner-telemetry-models/telemetry/models/TemperatureSensor';
 
 export default class ContractValidator {
   static validate(response: MinerTelemetry) {
@@ -20,18 +20,18 @@ export default class ContractValidator {
   }
 
   static validateJSON(response: any) {
-    let sensors = [];
+    const sensors = [];
     for (const sensor of response._temp) {
       sensors.push(new TemperatureSensor(sensor._intake, sensor._out));
     }
 
-    let minerTelemetry: MinerTelemetry = new MinerTelemetry(
-        response._id,
-        response._hashrate, 
-        response._health,
-        response._pool,
-        sensors,
-        response._fans
+    const minerTelemetry: MinerTelemetry = new MinerTelemetry(
+      response._id,
+      response._hashrate,
+      response._health,
+      response._pool,
+      sensors,
+      response._fans,
     );
 
     this.validate(minerTelemetry);

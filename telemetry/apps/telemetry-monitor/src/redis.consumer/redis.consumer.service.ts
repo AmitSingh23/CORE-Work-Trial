@@ -1,13 +1,16 @@
 import { RedisProvider } from '@app/redis/provider/redis.provider';
 import { Injectable } from '@nestjs/common';
-import Redis from 'ioredis';
+import { EventEmitter } from 'stream';
+import RedisRecord from './RedisRecord';
 
 @Injectable()
-export default class RedisConsumerService {
+export default class RedisConsumerService extends EventEmitter {
   private lastIds: Record<string, string>;
-  private redisProvider: RedisProvider
-  
+
+  private redisProvider: RedisProvider;
+
   constructor(redisProvider: RedisProvider) {
+    super();
     this.redisProvider = redisProvider;
   }
 
@@ -18,23 +21,21 @@ export default class RedisConsumerService {
     }
 
     while (true) {
-
       try {
         const streamEntries = await this.redisProvider.getRedis().xread(
           'BLOCK',
           0,
           'STREAMS',
           ...streams,
-          ...Object.values(this.lastIds)
+          ...Object.values(this.lastIds),
         );
 
         streamEntries.forEach(([stream, entries]) => {
           entries.forEach(([id, fields]) => {
-            console.log(`Received entry ${id} from stream ${stream}:`, fields);
             this.lastIds[stream] = id;
+            this.emit('redis-message-consumed', { id, stream, JSON.parse(fields) } as unknown);
           });
         });
-
       } catch (error: any) {
         console.error(error);
       }
