@@ -12,7 +12,7 @@ export class TelemetryMonitorService implements OnModuleInit {
   constructor(redisConsumerService: RedisConsumerService, configService: ConfigService, @Inject('RedisConsumerEventListener') eventListener: IRedisConsumerEventListener) {
     this.redisConsumerService = redisConsumerService;
 
-    this.redisConsumerService.addListener('redis-message-consumed', eventListener.listen);
+    this.redisConsumerService.on('redis-message-consumed', eventListener.listen.bind(eventListener));
 
     this.streams = configService.get<string>('MINERS')?.split(',')?.map((it) => `miner-telemetry:${it}`);
   }

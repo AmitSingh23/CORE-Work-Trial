@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import RedisPublisher from '@app/redis/publisher/redis.publisher';
@@ -28,7 +28,7 @@ export class TelemetryConsumerService {
       } catch (err: any) {
         console.error(err);
       }
-      console.log(minerId);
+      Logger.log(`Called GET /telemetry/${minerId}`);
     }
   }
 }

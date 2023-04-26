@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
 
 @Injectable()
-export class RedisProvider {
+export default class RedisProvider {
   private readonly redis: Redis;
 
   constructor(configService: ConfigService) {

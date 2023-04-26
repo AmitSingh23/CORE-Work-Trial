@@ -1,4 +1,4 @@
-import { RedisProvider } from '@app/redis/provider/redis.provider';
+import RedisProvider from '@app/redis/provider/redis.provider';
 import { Injectable } from '@nestjs/common';
 import { EventEmitter } from 'stream';
 import RedisRecord from './RedisRecord';
@@ -42,9 +42,3 @@ export default class RedisConsumerService extends EventEmitter {
     }
   }
 }
-
-// // Example usage
-// const redis = new Redis();
-// const reader = new RedisConsumerService(redis, ['stream1', 'stream2']);
-
-// reader.start();

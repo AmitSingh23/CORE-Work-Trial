@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import MinerTelemetryFactory from '@app/miner-telemetry-models/telemetry/models/MinerTelemetryFactory';
 import RedisPublisher from './redis.publisher';
-import { RedisProvider } from '../provider/redis.provider';
+import RedisProvider from '../provider/redis.provider';
 
 const mockRedis = {
   xadd: (...args) => ({}),

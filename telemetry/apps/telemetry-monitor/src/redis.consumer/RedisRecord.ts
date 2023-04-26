@@ -1,4 +1,3 @@
-
 export default interface RedisRecord {
     id: string;
     stream: string;
@@ -15,7 +14,7 @@ export default interface RedisRecord {
         ],
         _temp: [
             {
-                _intake: number, 
+                _intake: number,
                 _out: number
             },
         ]

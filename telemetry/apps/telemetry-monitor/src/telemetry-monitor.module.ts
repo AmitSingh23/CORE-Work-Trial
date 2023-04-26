@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { RedisProvider } from '@app/redis/provider/redis.provider';
+import RedisProvider from '@app/redis/provider/redis.provider';
 import { ConfigModule } from '@nestjs/config';
 import { TelemetryMonitorController } from './telemetry-monitor.controller';
 import { TelemetryMonitorService } from './telemetry-monitor.service';
