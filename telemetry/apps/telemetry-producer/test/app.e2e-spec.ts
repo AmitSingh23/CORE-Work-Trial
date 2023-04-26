@@ -1,7 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { ConfigService } from '@nestjs/config';
+import ContractValidator from '@app/test-utils/ContractValidator';
+import { AppModule } from '../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -9,16 +11,28 @@ describe('AppController (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(ConfigService)
+      .useValue({
+        get: () => '1,2,3',
+      })
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
-  });
+  it('expect valid response and 200 when miner exists', () => request(app.getHttpServer())
+    .get('/telemetry/1')
+    .expect(200)
+    .then((response) => {
+      ContractValidator.validateJSON(response.body);
+    }));
+
+  it('expect 404 when miner does not exist', () => request(app.getHttpServer())
+    .get('/telemetry/5')
+    .expect(404)
+    .then((response) => {
+      expect(response.body.message).toBe('Miner(5) was not found');
+    }));
 });

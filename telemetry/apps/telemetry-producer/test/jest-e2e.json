@@ -1,9 +1,14 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
+  "rootDir": "../../../",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@app/miner-telemetry-models(|/.*)$": "<rootDir>/libs/miner-telemetry-models/src/$1",
+    "^@app/test-utils(|/.*)$": "<rootDir>/libs/test-utils/src/$1",
+    "^@app/redis(|/.*)$": "<rootDir>/libs/redis/src/$1"
   }
 }

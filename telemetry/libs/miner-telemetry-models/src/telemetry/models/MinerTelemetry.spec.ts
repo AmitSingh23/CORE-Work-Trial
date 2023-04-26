@@ -37,7 +37,6 @@ describe('Validate Number of fans', () => {
 function generateMinerTelemetrySansTemp(
   temp: TemperatureSensor[],
 ): MinerTelemetry {
-  console.log(temp);
   return new MinerTelemetry('1', 100, true, true, temp, [1, 2, 3, 4]);
 }
 

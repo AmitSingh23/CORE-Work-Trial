@@ -1,0 +1,86 @@
+version: "3"
+
+services:
+  producer:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      APP_NAME: "telemetry-producer"
+      MINERS: "1,2,3,4,5,6,7,8,9,10"
+      NUM_MINERS: 10
+      AMBIENT_TEMPERATURE: 72
+    networks:
+      - app-network
+    depends_on:
+      - redis
+  consumer:
+    build: .
+    ports:
+      - "3001:3000"
+    environment:
+      APP_NAME: "telemetry-consumer"
+      PRODUCER_HOST: "http://producer:3000"
+      MINERS: "1,2,3"
+      REDIS_HOST: "redis://redis"
+    networks:
+      - app-network
+    depends_on:
+      - redis
+  consumer2:
+    build: .
+    ports:
+      - "3002:3000"
+    environment:
+      APP_NAME: "telemetry-consumer"
+      PRODUCER_HOST: "http://producer:3000"
+      MINERS: "4,5,6"
+      REDIS_HOST: "redis://redis"
+    networks:
+      - app-network
+    depends_on:
+      - redis
+  consumer3:
+    build: .
+    ports:
+      - "3003:3000"
+    environment:
+      APP_NAME: "telemetry-consumer"
+      PRODUCER_HOST: "http://producer:3000"
+      MINERS: "7,8,9,10"
+      REDIS_HOST: "redis://redis"
+    networks:
+      - app-network
+    depends_on:
+      - redis
+  monitor:
+    build: .
+    ports:
+      - "3004:3000"
+    environment:
+      APP_NAME: "telemetry-monitor"
+      MINERS: "1,2,3,4,5"
+      REDIS_HOST: "redis://redis"
+    networks:
+      - app-network
+    depends_on:
+      - redis
+  monitor2:
+    build: .
+    ports:
+      - "3005:3000"
+    environment:
+      APP_NAME: "telemetry-monitor"
+      MINERS: "6,7,8,9,10"
+      REDIS_HOST: "redis://redis"
+    networks:
+      - app-network
+    depends_on:
+      - redis
+  redis:
+    image: redis
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

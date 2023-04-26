@@ -36,6 +36,33 @@
       "compilerOptions": {
         "tsConfigPath": "libs/miner-telemetry-models/tsconfig.lib.json"
       }
+    },
+    "test-utils": {
+      "type": "library",
+      "root": "libs/test-utils",
+      "entryFile": "index",
+      "sourceRoot": "libs/test-utils/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/test-utils/tsconfig.lib.json"
+      }
+    },
+    "telemetry-monitor": {
+      "type": "application",
+      "root": "apps/telemetry-monitor",
+      "entryFile": "main",
+      "sourceRoot": "apps/telemetry-monitor/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/telemetry-monitor/tsconfig.app.json"
+      }
+    },
+    "redis": {
+      "type": "library",
+      "root": "libs/redis",
+      "entryFile": "index",
+      "sourceRoot": "libs/redis/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/redis/tsconfig.lib.json"
+      }
     }
   }
 }
